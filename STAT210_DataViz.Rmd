@@ -1,0 +1,174 @@
+---
+title: "Ch.3 Data Visualization"
+author: "Jerri Schorr"
+date: 09-24-2019
+output: github_document
+---
+ 
+```{r setup chunk, include=FALSE}
+library(tidyverse)
+```
+
+##### **Chapter 3**
+
+###### **3.1**
+
+* This chapter will cover ggplot
+    + ggplot = __grammar of graphics__ 
+    + uses a layering system
+* Make sure to load the "tidyverse" package to use the ggplot functions
+
+###### **3.2**
+
+* I think that a smaller engine will get better gas milage, while a larger engine will get less gas mileage
+
+```{r 3.2.1}
+ggplot2::mpg
+```
+
+```{r 3.2.2}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+    + This code proves that the original thought is true. As engine size increases, the gas milage decreases 
+    
+* The function "geom_point" creates the scatter plot layer to the graph
+    + Here is a generic form of a ggplot:
+    + ggplot(data = *DATA*) +  *GEOM_FUNCTION*(mapping = aes(*MAPPINGS*))
+    
+* Exercises
+1. You get a blank white box
+```{r 3.2.4}
+ggplot(data = mpg)
+```
+4. Scatter plot of hwy vs. cyl
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = cyl, y = hwy))
+  
+```
+5. Scatter plot of clas vs. drv
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = class, y = drv))
+```
+
+
+###### **3.3**
+
+* Changing colors and shape
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, size = class))
+```
+```{r}
+# Left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, alpha = class))
+
+# Right
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, shape = class))
+```
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
+```
+
+
+###### **3.4**
+
+* Common problems
+    + Make sure to put a __+__ at the end of a line and not at the beginning
+
+###### **3.5**
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl)
+```
+
+###### **3.6**
+
+* **Geoms** are different geometric shapes used in the graph
+    + bars, points, lines, ect.
+    
+```{r}
+# left
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+# right
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+    
+###### **3.7**
+
+* We will look at bar plots
+    + Bars seem simple but have many things that go into creating them
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut))
+```
+    
+
+###### **3.8**
+
+* You can color bar chart using **colour** or **fill**
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, colour = cut))
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = cut))
+```
+* You can also fill with another variable
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity))
+```
+
+* You can put bars next to each other with the **position** argument
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = clarity), position = "dodge")
+```
+
+###### **3.9**
+
+*  You can flip the x and y axis with a quick function 
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot()
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) + 
+  geom_boxplot() +
+  coord_flip()
+```
+
+###### **3.10**
+
+* Basic layering with ggplot
+
+ggplot(data = *DATA*) + 
+  *GEOM_FUNCTION*(
+     mapping = aes(*MAPPINGS*),
+     stat = *STAT*, 
+     position = *POSITION*) +
+  *COORDINATE_FUNCTION* +
+  *FACET_FUNCTION*
+
+
+
